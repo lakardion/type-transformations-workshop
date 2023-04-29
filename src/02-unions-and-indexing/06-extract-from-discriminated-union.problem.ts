@@ -14,6 +14,7 @@ export type Event =
       event: KeyboardEvent;
     };
 
-type ClickEvent = unknown;
+// Check extension of one type of the other and get it the union result.
+type ClickEvent = Extract<Event, { type: "click" }>;
 
 type tests = [Expect<Equal<ClickEvent, { type: "click"; event: MouseEvent }>>];
