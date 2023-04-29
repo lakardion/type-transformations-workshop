@@ -7,11 +7,13 @@ import { Equal, Expect } from "../helpers/type-utils";
 type Path = "Users/John/Documents/notes.txt";
 
 // Own implementation. Surely it has some edge cases to cover but this works!!
-type SplitString<
+export type SplitString<
   TStr extends string,
   TDelimiter extends string
 > = TStr extends `${infer TStart}${TDelimiter}${infer Rest}`
-  ? [TStart, ...SplitString<Rest, TDelimiter>]
+  ? TStart extends ""
+    ? [...SplitString<Rest, TDelimiter>]
+    : [TStart, ...SplitString<Rest, TDelimiter>]
   : [TStr];
 
 // type SplitPath = S.Split<Path,'/'>;
