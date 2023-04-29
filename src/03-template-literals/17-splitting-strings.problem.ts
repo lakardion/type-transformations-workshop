@@ -1,13 +1,22 @@
 // Might come in handy!
-// import { S } from "ts-toolbelt";
+import { S } from "ts-toolbelt";
 // https://millsp.github.io/ts-toolbelt/modules/string_split.html
 
 import { Equal, Expect } from "../helpers/type-utils";
 
 type Path = "Users/John/Documents/notes.txt";
 
-type SplitPath = unknown;
+// Own implementation. Surely it has some edge cases to cover but this works!!
+type SplitString<
+  TStr extends string,
+  TDelimiter extends string
+> = TStr extends `${infer TStart}${TDelimiter}${infer Rest}`
+  ? [TStart, ...SplitString<Rest, TDelimiter>]
+  : [TStr];
+
+// type SplitPath = S.Split<Path,'/'>;
+type SplitPath = SplitString<Path, "/">;
 
 type tests = [
-  Expect<Equal<SplitPath, ["Users", "John", "Documents", "notes.txt"]>>,
+  Expect<Equal<SplitPath, ["Users", "John", "Documents", "notes.txt"]>>
 ];
